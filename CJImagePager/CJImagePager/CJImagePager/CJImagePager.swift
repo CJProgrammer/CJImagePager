@@ -20,8 +20,8 @@ class CJImagePager: UIView {
     // 懒加载 collectionView
     fileprivate lazy var collectionView:UICollectionView = {
         
-        let flowLayout = UICollectionViewFlowLayout();
-        flowLayout.scrollDirection = UICollectionViewScrollDirection.horizontal
+        let flowLayout = CJImagePagerLayout();
+        flowLayout.scrollDirection = .horizontal
         
         let collectionView = UICollectionView.init(frame: self.bounds, collectionViewLayout: flowLayout)
         
@@ -29,7 +29,7 @@ class CJImagePager: UIView {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.decelerationRate = 0
+//        collectionView.decelerationRate = 0
         collectionView.register(UINib.init(nibName: Config.cellID, bundle: Bundle.main), forCellWithReuseIdentifier: Config.cellID)
         
         return collectionView
@@ -39,7 +39,6 @@ class CJImagePager: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        collectionView.frame = self.bounds
         addSubview(collectionView)
     }
     
@@ -52,49 +51,6 @@ class CJImagePager: UIView {
         didSet{
             collectionView.reloadData()
         }
-    }
-}
-
-// MARK:UIScrollViewDelegate
-
-extension CJImagePager: UIScrollViewDelegate {
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
-        print("scrollViewDidEndDecelerating.x = \(scrollView.contentOffset.x)")
-        
-        setCollectionViewContentOffset(scrollView: scrollView)
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        print("scrollViewDidEndDragging = \(scrollView.contentOffset.x)")
-        
-        setCollectionViewContentOffset(scrollView: scrollView)
-    }
-    
-    func setCollectionViewContentOffset(scrollView:UIScrollView) {
-        
-        let itemWidth:CGFloat = self.bounds.width - leftRightMargin * 2
-        let itemWidthHalf:CGFloat = itemWidth / 2
-        
-        let offsetX:CGFloat = scrollView.contentOffset.x
-        
-        guard offsetX > 0 else {
-            return
-        }
-        
-        guard offsetX <= (itemWidth + imageMargin) * CGFloat(imageUrls.count - 1) else {
-            return
-        }
-        
-        if offsetX < itemWidthHalf {
-            collectionView.scrollToItem(at: IndexPath.init(row: 0, section: 0), at: UICollectionViewScrollPosition.centeredHorizontally, animated: true)
-            return
-        }
-        
-        let index = Int((offsetX - itemWidthHalf) / (itemWidth + imageMargin)) + 1
-        
-        collectionView.scrollToItem(at: IndexPath.init(row: index, section: 0), at: UICollectionViewScrollPosition.centeredHorizontally, animated: true)
     }
 }
 

@@ -41,6 +41,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    /*
+    // MARK:UIScrollViewDelegate
+    
+    extension CJImagePager: UIScrollViewDelegate {
+        
+        func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+            //        setCollectionViewContentOffset(scrollView: scrollView)
+        }
+        
+        func setCollectionViewContentOffset(scrollView:UIScrollView) {
+            
+            let itemWidth:CGFloat = self.bounds.width - leftRightMargin * 2
+            let itemWidthHalf:CGFloat = itemWidth / 2
+            
+            let offsetX:CGFloat = scrollView.contentOffset.x
+            
+            guard offsetX > 0 else {
+                return
+            }
+            
+            guard offsetX <= (itemWidth + imageMargin) * CGFloat(imageUrls.count - 1) else {
+                return
+            }
+            
+            if offsetX < itemWidthHalf {
+                collectionView.scrollToItem(at: IndexPath.init(row: 0, section: 0), at: UICollectionViewScrollPosition.centeredHorizontally, animated: true)
+                return
+            }
+            
+            let index = Int((offsetX - itemWidthHalf) / (itemWidth + imageMargin)) + 1
+            
+            collectionView.scrollToItem(at: IndexPath.init(row: index, section: 0), at: UICollectionViewScrollPosition.centeredHorizontally, animated: true)
+        }
+    }
+     
+    */
 
 }
 
